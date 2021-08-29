@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <title>Ciphering messages for Nerdland Discord meetup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<style>
+    textarea {
+        resize: none;
+    }
+    
+    * {
+        margin: 1em;
+    }
+    
+    body {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <label for="cipher-input">entry voor het Nerdland gastenboek</label>
+    <textarea id="cipher-input" maxlength="120" cols="31" rows="4"></textarea><br>
+    <button type="button" id="js-calc-cipher">Door cipher halen</button>
+    <div id="cipher-output"></div>
+
+    <script type="text/javascript" src="script.js" />
+</body>
+
+</html>
