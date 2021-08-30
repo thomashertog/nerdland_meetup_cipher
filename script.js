@@ -1,8 +1,12 @@
 let button = document.getElementById('js-calc-cipher');
-button.addEventListener('click', function(event) {
-    let cipherInput = document.getElementById('cipher-input').value;
-    let cipherOutputArea = document.getElementById('cipher-output');
+let cipherInputArea = document.getElementById('cipher-input');
+let cipherOutputArea = document.getElementById('cipher-output');
 
+let charCountDiv = document.getElementById('char-count');
+
+
+button.addEventListener('click', function(event) {
+    let cipherInput = cipherInputArea.value
     let cipherOutput = [];
     for (char of cipherInput) {
         let cipherArray = cipher[char];
@@ -15,6 +19,12 @@ button.addEventListener('click', function(event) {
     }
     cipherOutputArea.textContent = cipherOutput.join(' ');
 });
+
+cipherInputArea.addEventListener('input', function(event){
+    let remaining = 120 - cipherInputArea.value.length;
+    let text = new String(remaining) + " characters left";
+    charCountDiv.textContent = text;
+})
 
 const cipher = {
     "A": ["AAA"],
