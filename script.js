@@ -5,6 +5,7 @@ let cipherOutputArea = document.getElementById('cipher-output');
 let charCountDiv = document.getElementById('char-count');
 
 
+// Handle Cipher button
 button.addEventListener('click', function(event) {
     let cipherInput = cipherInputArea.value
     let cipherOutput = [];
@@ -13,13 +14,16 @@ button.addEventListener('click', function(event) {
         let randomIndex = Math.floor(Math.random() * cipherArray.length);
         cipherOutput.push(cipherArray[randomIndex]);
     }
-    while (cipherOutput.length < 120) {
+    while (cipherOutput.length < 112) {
         let randomIndex = Math.floor(Math.random() * cipher["opvulling"].length);
         cipherOutput.push(cipher["opvulling"][randomIndex]);
     }
     cipherOutputArea.textContent = cipherOutput.join(' ');
+
+    draw(cipherOutput);
 });
 
+// Update count on text changes
 cipherInputArea.addEventListener('input', function(event){
     let remaining = 120 - cipherInputArea.value.length;
     let text = new String(remaining) + " characters left";
