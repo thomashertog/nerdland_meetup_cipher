@@ -30,7 +30,7 @@ button.addEventListener('click', function(event) {
 // Update count on text changes
 cipherInputArea.addEventListener('input', function(event){
     let remaining = 120 - cipherInputArea.value.length;
-    let text = new String(remaining) + " characters left";
+    let text = new String(remaining) + " characters over";
     charCountDiv.textContent = text;
 })
 

@@ -10,6 +10,4 @@ function save(name, text, encoded) {
     request.open("POST", url);
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(data);
-
-    request.onload = (e)=>alert(request.response);
 }
