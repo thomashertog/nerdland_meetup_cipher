@@ -1,4 +1,5 @@
 let button = document.getElementById('js-calc-cipher');
+let userNameArea = document.getElementById('user-name');
 let cipherInputArea = document.getElementById('cipher-input');
 let cipherOutputArea = document.getElementById('cipher-output');
 
@@ -7,6 +8,7 @@ let charCountDiv = document.getElementById('char-count');
 
 // Handle Cipher button
 button.addEventListener('click', function(event) {
+    let userName = userNameArea.value
     let cipherInput = cipherInputArea.value
     let cipherOutput = [];
     for (char of cipherInput) {
@@ -18,15 +20,17 @@ button.addEventListener('click', function(event) {
         let randomIndex = Math.floor(Math.random() * cipher["opvulling"].length);
         cipherOutput.push(cipher["opvulling"][randomIndex]);
     }
-    cipherOutputArea.textContent = cipherOutput.join(' ');
+    let encoded = cipherOutput.join(' ');
+    cipherOutputArea.textContent = encoded;
 
     draw(cipherOutput);
+    save(userName, cipherInput, encoded);
 });
 
 // Update count on text changes
 cipherInputArea.addEventListener('input', function(event){
     let remaining = 120 - cipherInputArea.value.length;
-    let text = new String(remaining) + " characters left";
+    let text = new String(remaining) + " characters over";
     charCountDiv.textContent = text;
 })
 
