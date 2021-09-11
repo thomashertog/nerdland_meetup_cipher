@@ -4,32 +4,33 @@ let cipherInputArea = document.getElementById('cipher-input');
 let cipherOutputArea = document.getElementById('cipher-output');
 
 let charCountDiv = document.getElementById('char-count');
+const maxInputLength = 112;
 
 
 // Handle Cipher button
-button.addEventListener('click', function(event) {
+button.addEventListener('click', function (event) {
     let userName = userNameArea.value
-    let cipherInput = cipherInputArea.value
+    let cipherInput = replaceNumbersInText(cipherInputArea.value);
     let cipherOutput = [];
-    const maxInputLength = 112;
 
     let lengthAvailableForMorse = maxInputLength - cipherInput.length;
     lengthAvailableForMorse += countWhitespaceInText(cipherInput);
-    
+
     let morseIndex = 0;
     let morseInHelix = morse[lengthAvailableForMorse];
     for (char of cipherInput) {
         let cipheredChar;
-        
-        if(char === ' '){
+
+        if (char === ' ') {
             let morseChar = morseInHelix[morseIndex++];
             cipheredChar = cipher.morse[morseChar];
-        }else{
+        } else {
             cipheredChar = cipher[char];
         }
         cipherOutput.push(cipheredChar);
+        
     }
-    
+
     while (cipherOutput.length < maxInputLength) {
         let morseChar = morseInHelix[morseIndex++];
         cipheredChar = cipher.morse[morseChar];
@@ -42,22 +43,55 @@ button.addEventListener('click', function(event) {
     save(userName, cipherInput, encoded);
 });
 
-function countWhitespaceInText(text){
+function countWhitespaceInText(text) {
     let count = 0;
-    for (char of text){
-        if(char === ' '){
+    for (char of text) {
+        if (char === ' ') {
             count += 1;
         }
     }
     return count;
 }
 
+
+function replaceNumbersInText(text) {
+    let result = [];
+    for (char of text) {
+       if(isNumber(char))
+            result.push(numbers[char]);
+        else
+            result.push(char);
+    }
+    return result.join('');
+}
+
+
+const charcodeZero = "0".charCodeAt(0);
+const charcodeNine = "9".charCodeAt(0);
+function isNumber(char){
+    var c = char.charCodeAt(0);
+    return c >= charcodeZero && c <= charcodeNine;
+}
+
 // Update count on text changes
-cipherInputArea.addEventListener('input', function(event){
-    let remaining = 120 - cipherInputArea.value.length;
+cipherInputArea.addEventListener('input', function (event) {
+    let remaining = maxInputLength - replaceNumbersInText(cipherInputArea.value).length;
     let text = new String(remaining) + " characters over";
     charCountDiv.textContent = text;
 })
+
+const numbers = {
+    "1": "%a",
+    "2": "%b",
+    "3": "%c",
+    "4": "%d",
+    "5": "%e",
+    "6": "%f",
+    "7": "%g",
+    "8": "%h",
+    "9": "%i",
+    "0": "%j",
+};
 
 const cipher = {
     "A": "CAG",
@@ -116,7 +150,7 @@ const cipher = {
     "?": "GTC",
     "!": "TTT",
     ".": "GTT",
-    "-": "TTC", 
+    "-": "TTC",
     ")": "TGA",
     "(": "TCA",
     "#": "TGC",
@@ -125,7 +159,8 @@ const cipher = {
     "morse": {
         ".": "TAT",
         "-": "TTG",
-        "/": "TGC"
+        "/": "TGC",
+        " ": "TGG"
     }
 }
 
@@ -247,3 +282,60 @@ const morse = [
     "-... . --.. --- .../. -./-... .-. .- -. ... --- -./--.. .. .--- -./--. . . -./.- ... - .-. --- -. .- ..- - . -.",  //111
     ". .-./.-- .- .-. . -./-. --- --./. -. -.- . .-.. ./.-. . -.-. .... - --.. . - - .. -. --. . -./-. --- -.. .. --."  //112
 ]
+
+function TEST_count_morse() {
+    let isOk = true;
+    for (var i = 0; i < morse.length; i++) {
+        if (morse[i].length != i) {
+            isOk = false;
+            console.log("count morse failed for" + new String(i) + ". Result was " + new String(morse[i].length) + " but should be " + new String(i));
+        }
+    }
+
+    if (isOk)
+        console.log("TEST_count_morse PASSED!");
+    else
+        console.log("TEST_count_morse FAILED!");
+}
+
+function TEST_replace_numbers() {
+    var case1 = "1234567890";
+    var case2 = "sfkjlsdgldsfsd";
+    var case3 = "kl312123j4kl90sd";
+
+    var result1 = "%a%b%c%d%e%f%g%h%i%j";
+    var result2 = "sfkjlsdgldsfsd";
+    var result3 = "kl%c%a%b%a%b%cj%dkl%i%jsd"
+
+    let isOk = true;
+
+    if (replaceNumbersInText(case1) != result1) {
+        console.log("Replace numbers failed for " + case1 + ". Result was " + replaceNumbersInText(case1) + " but should be" + result1);
+        isOk = false;
+    }
+
+
+    if (replaceNumbersInText(case2) != result2) {
+        console.log("Replace numbers failed for " + case2 + ". Result was " + replaceNumbersInText(case2) + " but should be" + result2);
+        isOk = false;
+    }
+
+
+    if (replaceNumbersInText(case3) != result3) {
+        console.log("Replace numbers failed for " + case3 + ". Result was " + replaceNumbersInText(case3) + " but should be" + result3);
+        isOk = false;
+    }
+
+    if (isOk)
+        console.log("TEST_replace_numbers PASSED!");
+    else
+        console.log("TEST_replace_numbers FAILED!");
+}
+
+// run tests
+console.log("RUNNING TESTS!");
+
+TEST_count_morse();
+TEST_replace_numbers();
+
+console.log("TESTING DONE!");
