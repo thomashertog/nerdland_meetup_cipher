@@ -144,7 +144,7 @@ const cipher = {
     "v": "ATA",
     "w": "CGA",
     "x": "ATG",
-    "y": "CCXT",
+    "y": "CCT",
     "z": "CCA",
     ",": "GTA",
     "?": "GTC",
